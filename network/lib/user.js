@@ -1,4 +1,4 @@
-const api = require("../api");
+import api from "../api";
 
 const getUsers = async () => {
   try {
