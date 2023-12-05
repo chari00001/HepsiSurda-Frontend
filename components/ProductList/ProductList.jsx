@@ -18,7 +18,7 @@ const ProductList = () => {
 
   return (
     <div className="grid grid-cols-3 gap-6">
-      {products.map((product, i) => (
+      {products?.map((product, i) => (
         <Link
           href={{
             pathname: "/product/",

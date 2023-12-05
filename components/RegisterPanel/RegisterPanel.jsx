@@ -1,19 +1,21 @@
+"use client";
+
 import React, { useState } from "react";
 import { register } from "../../network/lib/auth";
 
 function RegisterPanel() {
-  const [surname, setSurname] = useState("");
   const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+  const [surname, setSurname] = useState("");
   const [telno, setTelno] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (surname && email && password && telno && name) {
-      register({ surname, email, password, telno, name })
+    if (name && surname && telno && email && password) {
+      register({ name, surname, telno, email, password })
         .then((res) => {
-          console.log(res);
+          localStorage.setItem("token", res.data.token);
         })
         .catch((err) => {
           console.log(err);
@@ -23,73 +25,80 @@ function RegisterPanel() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4 bg-gray-100 rounded-md w-1/2 h-[40rem]"
-    >
-      <div className="w-[10rem]">
-        <label className="text-black">
-          Name:
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-[10rem] text-black"
-          />
-        </label>
-      </div>
-      <div className="w-[10rem]">
-        <label className="text-black">
-          Surname:
-          <input
-            type="text"
-            value={surname}
-            onChange={(e) => setSurname(e.target.value)}
-            className="w-[10rem] text-black"
-          />
-        </label>
-      </div>
-      <div className="w-[10rem]">
-        <label className="text-black">
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-[10rem] text-black"
-          />
-        </label>
-      </div>
-      <div className="w-[10rem]">
-        <label className="text-black">
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-[10rem] text-black"
-          />
-        </label>
-      </div>
-      <div className="w-[10rem]">
-        <label className="text-black">
-          Telefon numarası:
-          <input
-            type="number"
-            value={telno}
-            onChange={(e) => setTelno(e.target.value)}
-            className="w-[10rem] text-black"
-          />
-        </label>
-      </div>
-
-      <button
-        type="submit"
-        className="text-white bg-blue-500 rounded-md p-2 px-6"
+    <div className="flex flex-row justify-center mt-80">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-gray-100 md:rounded-2xl p-8 md:m-8 shadow-inner ring-1 ring-gray-300 transition duration-300 hover:ring-8 hover:ring-gray-300 w-[25rem]"
       >
-        Register
-      </button>
-    </form>
+        <div className="w-[10rem]">
+          <label className="text-black">
+            Name:
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="border-2 border-slate-300 rounded-md p-2
+            mr-4 text-xl font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-all duration-300 ease-in-out transform hover:scale-y-105 hover:shadow-xl shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-opacity-50 max-h-12"
+            />
+          </label>
+        </div>
+        <div className="w-[10rem]">
+          <label className="text-black">
+            Surname:
+            <input
+              type="text"
+              value={surname}
+              onChange={(e) => setSurname(e.target.value)}
+              className="border-2 border-slate-300 rounded-md p-2
+            mr-4 text-xl font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-all duration-300 ease-in-out transform hover:scale-y-105 hover:shadow-xl shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-opacity-50 max-h-12"
+            />
+          </label>
+        </div>
+        <div className="w-[10rem]">
+          <label className="text-black">
+            Phone number:
+            <input
+              type="text"
+              value={telno}
+              onChange={(e) => setTelno(e.target.value)}
+              className="border-2 border-slate-300 rounded-md p-2
+            mr-4 text-xl font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-all duration-300 ease-in-out transform hover:scale-y-105 hover:shadow-xl shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-opacity-50 max-h-12"
+            />
+          </label>
+        </div>
+        <div className="w-[10rem]">
+          <label className="text-black">
+            Email:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="border-2 border-slate-300 rounded-md p-2
+            mr-4 text-xl font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-all duration-300 ease-in-out transform hover:scale-y-105 hover:shadow-xl shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-opacity-50 max-h-12"
+            />
+          </label>
+        </div>
+        <div className="w-[10rem]">
+          <label className="text-black">
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border-2 border-slate-300 rounded-md p-2
+            mr-4 text-xl font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-all duration-300 ease-in-out transform hover:scale-y-105 hover:shadow-xl shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-opacity-50 max-h-12"
+            />
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          className="text-white bg-blue-500 rounded-md p-2 px-6 transition-colors duration-200 hover:bg-blue-700 my-4"
+        >
+          Register
+        </button>
+      </form>
+    </div>
   );
 }
 

@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useState } from "react";
 import { login } from "../../network/lib/auth";
+import Swal from "sweetalert2";
 
 function LoginPanel() {
   const [password, setPassword] = useState("");
@@ -10,8 +13,16 @@ function LoginPanel() {
     if (email && password) {
       login({ email, password })
         .then((res) => {
-          // set token to local storage
-          localStorage.setItem("token", res.data.token);
+          console.log(res);
+          if (res.status === 200) {
+            // Swal.alert({
+            //   title: "Giriş başarılı",
+            //   icon: "success",
+            //   confirmButtonText: "Tamam",
+            // });
+            localStorage.setItem("token", res.data.token);
+            window.location.href = "/";
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -21,40 +32,44 @@ function LoginPanel() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4 bg-gray-100 rounded-md w-1/2 h-[40rem]"
-    >
-      <div className="w-[10rem]">
-        <label className="text-black">
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-[10rem] text-black"
-          />
-        </label>
-      </div>
-      <div className="w-[10rem]">
-        <label className="text-black">
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-[10rem] text-black"
-          />
-        </label>
-      </div>
-
-      <button
-        type="submit"
-        className="text-white bg-blue-500 rounded-md p-2 px-6"
+    <div className="flex flex-row justify-center mt-80">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-gray-100 md:rounded-2xl p-8 md:m-8 shadow-inner ring-1 ring-gray-300 transition duration-300 hover:ring-8 hover:ring-gray-300 w-[25rem]"
       >
-        Login
-      </button>
-    </form>
+        <div className="w-[10rem]">
+          <label className="text-black">
+            Email:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="border-2 border-slate-300 rounded-md p-2
+            mr-4 text-xl font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-all duration-300 ease-in-out transform hover:scale-y-105 hover:shadow-xl shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-opacity-50 max-h-12"
+            />
+          </label>
+        </div>
+        <div className="w-[10rem]">
+          <label className="text-black">
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border-2 border-slate-300 rounded-md p-2
+            mr-4 text-xl font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-all duration-300 ease-in-out transform hover:scale-y-105 hover:shadow-xl shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-opacity-50 max-h-12"
+            />
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          className="text-white bg-blue-500 rounded-md p-2 px-6 transition-colors duration-200 hover:bg-blue-700 my-4"
+        >
+          Login
+        </button>
+      </form>
+    </div>
   );
 }
 
