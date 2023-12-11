@@ -18,7 +18,17 @@ const register = async (credentials) => {
   }
 };
 
+const resetPassword = async (credentials) => {
+  try {
+    const response = await api.post("/auth/resetPassword", credentials);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   login,
   register,
+  resetPassword,
 };

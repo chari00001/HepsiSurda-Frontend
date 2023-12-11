@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "../../components/Navbar/Navbar";
+import { addToCart } from "../../network/lib/cart";
+import { getProductById } from "../../network/lib/product";
+import Swal from "sweetalert2";
 
 const DetailPage = ({ productId }) => {
   const [product, setProduct] = useState({
@@ -14,24 +17,27 @@ const DetailPage = ({ productId }) => {
     price: "$99.99",
     details: "This is a mock product.",
   });
+
   const [comments, setComments] = useState([
     { id: 1, text: "Great product!", rating: 5 },
     { id: 2, text: "Not bad, but could be better.", rating: 3 },
     { id: 3, text: "I love it!", rating: 5 },
     { id: 4, text: "Average product.", rating: 2 },
   ]);
+
+  const [quantity, setQuantity] = useState(1);
+
   const [filteredComments, setFilteredComments] = useState([]);
   const [ratingFilter, setRatingFilter] = useState(null);
 
   const id = useSearchParams().get("id");
 
   useEffect(() => {
-    // Fetch product details by ID from the server
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`/api/products/${id}`);
-        const data = await response.json();
-        setProduct(data);
+        const res = await getProductById(id);
+        console.log(res);
+        setProduct(res);
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -73,14 +79,30 @@ const DetailPage = ({ productId }) => {
     // ...
   };
 
-  const handleReplyToComment = (commentId, reply) => {
-    // Add reply to the comment on the server and update comments state
-    // ...
-  };
+  const handleReplyToComment = (commentId, reply) => {};
 
-  const handleAddToCart = () => {
-    // Add the product to the cart
-    // ...
+  const handleAddToCart = async () => {
+    await addToCart({
+      user_id: 60,
+      product_id: product.product_id,
+      amount: product.price,
+      quantity,
+    })
+      .then((res) => {
+        if (res.status === "OK") {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Item added to cart",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleCompare = () => {
@@ -98,7 +120,7 @@ const DetailPage = ({ productId }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Images section */}
               <div>
-                {product.images.map((image) => (
+                {/* {product.image?.map((image) => (
                   <div
                     key={image.id}
                     className="w-full h-48 mb-2 overflow-hidden rounded-lg"
@@ -109,7 +131,7 @@ const DetailPage = ({ productId }) => {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                ))}
+                ))} */}
               </div>
               {/* Product details section */}
               <div>
