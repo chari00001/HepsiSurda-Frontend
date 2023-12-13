@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { register } from "../../network/lib/auth";
+import Swal from "sweetalert2";
 
 function RegisterPanel() {
   const [name, setName] = useState("");
@@ -12,10 +13,18 @@ function RegisterPanel() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(name, surname, telno, email, password);
     if (name && surname && telno && email && password) {
       register({ name, surname, telno, email, password })
         .then((res) => {
           localStorage.setItem("token", res.data.token);
+          Swal.fire({
+            icon: "success",
+            title: "Kayıt başarılı",
+            text: "Giriş yapabilirsiniz",
+            confirmButtonText: "Tamam",
+          });
+          window.location.href = "/login";
         })
         .catch((err) => {
           console.log(err);

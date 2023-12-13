@@ -8,6 +8,8 @@ import { getProductById } from "../../network/lib/product";
 import Swal from "sweetalert2";
 
 const DetailPage = ({ productId }) => {
+  const userId = localStorage.getItem("user_id");
+
   const [product, setProduct] = useState({
     name: "Mock Product",
     images: [
@@ -83,7 +85,7 @@ const DetailPage = ({ productId }) => {
 
   const handleAddToCart = async () => {
     await addToCart({
-      user_id: 60,
+      user_id: userId,
       product_id: product.product_id,
       amount: product.price,
       quantity,

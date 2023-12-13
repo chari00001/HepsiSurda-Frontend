@@ -15,12 +15,9 @@ function LoginPanel() {
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
-            // Swal.alert({
-            //   title: "Giriş başarılı",
-            //   icon: "success",
-            //   confirmButtonText: "Tamam",
-            // });
+            console.log(res.data.user.user_id);
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user_id", res.data.user.user_id);
             window.location.href = "/";
           }
         })
