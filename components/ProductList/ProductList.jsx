@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import Product from "../Product/Product";
 import { getProducts } from "../../network/lib/product";
 
@@ -10,11 +9,22 @@ const ProductList = () => {
   useEffect(() => {
     getProducts()
       .then((res) => {
-        console.log(res);
-        setProducts(res);
+        const productsWithImages = res.map((product) => {
+          return {
+            ...product,
+            imageUrl: product.image
+              ? `http://localhost:8080/${product.image}`
+              : null,
+          };
+        });
+
+        console.log(productsWithImages);
+        setProducts(productsWithImages);
       })
       .catch((err) => console.log(err));
   }, []);
+
+
 
   return (
     <div className="grid grid-cols-3 gap-6">
@@ -27,6 +37,8 @@ const ProductList = () => {
           key={i}
         >
           <div>
+            {" "}
+            {/* Make sure to use <a> tag to enable the navigation */}
             <Product product={product} />
           </div>
         </Link>

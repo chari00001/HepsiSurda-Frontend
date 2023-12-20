@@ -44,8 +44,13 @@ const Navbar = () => {
             </Link>
           )}
           <Link href="/categories">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
               Categories
+            </span>
+          </Link>
+          <Link href="/admin">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+              Admin
             </span>
           </Link>
         </div>

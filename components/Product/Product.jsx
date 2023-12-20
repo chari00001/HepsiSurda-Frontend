@@ -8,7 +8,7 @@ const Product = ({ product }) => {
         alt={name}
         className="w-full h-64 object-cover"
       />
-      <h2 className="text-xl font-semibold">{product.name}</h2>
+      <h2 className="text-xl font-semibold text-black">{product.name}</h2>
       <p className="text-gray-700">{product.price}</p>
     </div>
   );

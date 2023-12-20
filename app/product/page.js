@@ -31,11 +31,13 @@ const DetailPage = ({ productId }) => {
   const id = useSearchParams().get("id");
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProductAndImages = async () => {
       try {
-        const res = await getProductById(id);
-        console.log(res);
-        setProduct(res);
+        const productRes = await getProductById(id);
+        productRes.image = `http://localhost:8080/${productRes.image}`;
+
+        console.log(productRes);
+        setProduct(productRes);
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -51,7 +53,7 @@ const DetailPage = ({ productId }) => {
       }
     };
 
-    fetchProduct();
+    fetchProductAndImages();
     fetchComments();
   }, [productId]);
 
@@ -174,18 +176,7 @@ const DetailPage = ({ productId }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Images section */}
               <div>
-                {/* {product.image?.map((image) => (
-                  <div
-                    key={image.id}
-                    className="w-full h-48 mb-2 overflow-hidden rounded-lg"
-                  >
-                    <img
-                      src={image.url}
-                      alt={image.alt}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))} */}
+                <img src={product.image} alt="" className="rounded-2xl" />
               </div>
               {/* Product details section */}
               <div>
