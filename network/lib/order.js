@@ -17,6 +17,14 @@ const getOrders = async () => {
     console.log(error);
   }
 };
+const getOrdersByUserId = async (userId) => {
+  try {
+    const response = await api.get(`/orders/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const getOrder = async (userId) => {
   try {
@@ -31,4 +39,5 @@ module.exports = {
   makeOrder,
   getOrders,
   getOrder,
+  getOrdersByUserId,
 };

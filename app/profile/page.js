@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import { getUserById, updateUser } from "../../network/lib/user";
+import { getOrdersByUserId } from "../../network/lib/order";
 import { resetPassword } from "../../network/lib/auth";
 
 const ProfilePage = () => {
@@ -30,6 +31,18 @@ const ProfilePage = () => {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      getOrdersByUserId(userId)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [user]);
 
   const resetPasswordHandler = (event) => {
     event.preventDefault();

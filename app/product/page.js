@@ -25,10 +25,16 @@ const DetailPage = ({ productId }) => {
 
   const [quantity, setQuantity] = useState(1);
 
+  const [productFeatures, setProductFeatures] = useState([]);
+  const [selectedFeatures, setSelectedFeatures] = useState({});
   const [filteredComments, setFilteredComments] = useState([]);
   const [ratingFilter, setRatingFilter] = useState(null);
 
   const id = useSearchParams().get("id");
+
+  const handleQuantityChange = (e) => {
+    setQuantity(e.target.value);
+  };
 
   useEffect(() => {
     const fetchProductAndImages = async () => {
@@ -56,6 +62,29 @@ const DetailPage = ({ productId }) => {
     fetchProductAndImages();
     fetchComments();
   }, [productId]);
+
+  useEffect(() => {
+    if (product && product.features) {
+      // Step 1: Group features into an object based on their keys
+      const tempGroupedFeatures = product.features.reduce((acc, feature) => {
+        if (!acc[feature.key]) {
+          acc[feature.key] = [];
+        }
+        acc[feature.key].push(feature.value);
+        return acc;
+      }, {});
+
+      // Step 2: Convert the grouped object into an array of objects
+      const groupedFeaturesArray = Object.keys(tempGroupedFeatures).map(
+        (key) => {
+          return { key: key, values: tempGroupedFeatures[key] };
+        }
+      );
+
+      console.log(groupedFeaturesArray);
+      setProductFeatures(groupedFeaturesArray);
+    }
+  }, [product]);
 
   useEffect(() => {
     const sortComments = (comments, criterion) => {
@@ -118,30 +147,38 @@ const DetailPage = ({ productId }) => {
       });
   };
 
+  const handleFeatureChange = (featureKey, value) => {
+    setSelectedFeatures({ ...selectedFeatures, [featureKey]: value });
+  };
+
   const handleReplyToComment = (commentId, reply) => {};
 
   const handleAddToCart = async () => {
-    await addToCart({
+    const cartData = {
       user_id: userId,
       product_id: product.product_id,
       amount: product.price,
       quantity,
-    })
-      .then((res) => {
-        if (res.status === "OK") {
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Item added to cart",
-          });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      features: selectedFeatures, // Include selected features here
+    };
+
+    console.log(cartData);
+
+    try {
+      const res = await addToCart(cartData);
+      if (res.status === "OK") {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Item added to cart",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCompare = () => {
@@ -171,37 +208,68 @@ const DetailPage = ({ productId }) => {
       <Navbar />
       <div className="max-w-2xl mx-auto p-4 text-black">
         {product && (
-          <div>
+          <div className="">
             <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="flex flex-row gap-4">
               {/* Images section */}
-              <div>
+              <div className="w-1/3">
                 <img src={product.image} alt="" className="rounded-2xl" />
               </div>
               {/* Product details section */}
-              <div>
-                <div className="mb-4">
-                  <span className="text-xl font-bold">{product.price}</span>
+              <div className="flex flex-row w-2/3 justify-between">
+                <div className="flex flex-col">
+                  <div className="mb-4">
+                    <span className="text-xl font-bold">{product.price}</span>
+                  </div>
+                  <div>
+                    <input
+                      type="number"
+                      min="1"
+                      value={quantity}
+                      onChange={handleQuantityChange}
+                      className="border border-gray-300 rounded-md px-3 py-2"
+                    />
+                  </div>
+                  {/* Add to cart button */}
+                  <button
+                    onClick={handleAddToCart}
+                    className="bg-blue-500 text-white py-2 px-4 mt-4 rounded-md"
+                  >
+                    Add to Cart
+                  </button>
+                  {/* Cargo and delivery options section */}
+                  <div>{/* ... */}</div>
+                  {/* Compare button */}
+                  <button
+                    onClick={handleCompare}
+                    className="bg-gray-500 text-white py-2 px-4 mt-2 rounded-md"
+                  >
+                    Compare
+                  </button>
                 </div>
-                <div>
-                  <p className="text-gray-800">{product.details}</p>
+                <div className="flex flex-col space-y-4">
+                  {productFeatures.map((feature, i) => (
+                    <div key={i} className="bg-white p-4 shadow rounded-lg">
+                      <h2 className="text-lg font-semibold text-gray-700 mb-2">
+                        {feature.key}
+                      </h2>
+                      <select
+                        name={feature.key}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                        onChange={(e) =>
+                          handleFeatureChange(feature.key, e.target.value)
+                        }
+                      >
+                        <option value="">Seciniz</option>
+                        {feature.values.map((item, index) => (
+                          <option key={index} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ))}
                 </div>
-                {/* Add to cart button */}
-                <button
-                  onClick={handleAddToCart}
-                  className="bg-blue-500 text-white py-2 px-4 mt-4 rounded-md"
-                >
-                  Add to Cart
-                </button>
-                {/* Cargo and delivery options section */}
-                <div>{/* ... */}</div>
-                {/* Compare button */}
-                <button
-                  onClick={handleCompare}
-                  className="bg-gray-500 text-white py-2 px-4 mt-2 rounded-md"
-                >
-                  Compare
-                </button>
               </div>
             </div>
             {/* Comments section */}
