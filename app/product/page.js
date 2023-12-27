@@ -11,24 +11,22 @@ import {
   getProductComments,
   rateComment,
 } from "../../network/lib/comment";
+import { createRating, getProductRatings } from "../../network/lib/rating";
 import { getUserById } from "../../network/lib/user";
 
 const DetailPage = ({ productId }) => {
   const userId = localStorage.getItem("user_id");
-
   const [product, setProduct] = useState({});
-
   const [comments, setComments] = useState([]);
   const [currentComment, setCurrentComment] = useState("");
   const [userNames, setUserNames] = useState({});
   const [sortCriterion, setSortCriterion] = useState("date");
-
   const [quantity, setQuantity] = useState(1);
-
   const [productFeatures, setProductFeatures] = useState([]);
   const [selectedFeatures, setSelectedFeatures] = useState({});
   const [filteredComments, setFilteredComments] = useState([]);
   const [ratingFilter, setRatingFilter] = useState(null);
+  const [averageRating, setAverageRating] = useState(0);
 
   const id = useSearchParams().get("id");
 
@@ -42,7 +40,6 @@ const DetailPage = ({ productId }) => {
         const productRes = await getProductById(id);
         productRes.image = `http://localhost:8080/${productRes.image}`;
 
-        console.log(productRes);
         setProduct(productRes);
       } catch (error) {
         console.error("Error fetching product details:", error);
@@ -52,7 +49,6 @@ const DetailPage = ({ productId }) => {
     const fetchComments = async () => {
       try {
         const res = await getProductComments(id);
-        console.log(res);
         setComments(res.data);
       } catch (error) {
         console.error("Error fetching product comments:", error);
@@ -81,7 +77,6 @@ const DetailPage = ({ productId }) => {
         }
       );
 
-      console.log(groupedFeaturesArray);
       setProductFeatures(groupedFeaturesArray);
     }
   }, [product]);
@@ -124,13 +119,22 @@ const DetailPage = ({ productId }) => {
   };
 
   const handleMakeComment = async (comment) => {
+    if (!userId) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "You must be logged in to comment",
+      });
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
+    }
     await makeComment({
       product_id: product.product_id,
       user_id: userId,
       text: currentComment,
     })
       .then((res) => {
-        console.log(res);
         if (res.status === 201) {
           Swal.fire({
             icon: "success",
@@ -189,7 +193,6 @@ const DetailPage = ({ productId }) => {
   const handleRateComment = (commentId, rating) => {
     rateComment(commentId, parseInt(rating))
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           Swal.fire({
             icon: "success",
@@ -202,6 +205,43 @@ const DetailPage = ({ productId }) => {
         console.log(err);
       });
   };
+
+  const handleRating = (rating) => {
+    createRating({
+      user_id: userId,
+      product_id: product.product_id,
+      rating_count: rating,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 201) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Rating added",
+          });
+        } else if (res.status === 200) {
+          Swal.fire({
+            icon: "warning",
+            title: "Hata",
+            text: "Zaten oy vermişsiniz.",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getProductRatings(id)
+      .then((res) => {
+        setAverageRating(res.data.averageRating);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
@@ -270,6 +310,22 @@ const DetailPage = ({ productId }) => {
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+            <div className="mt-4">
+              <h2 className="text-xl font-bold mb-2">Rate this product</h2>
+              <div className="flex">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button key={star} onClick={() => handleRating(star)}>
+                    {/* Replace the following with your star icon */}
+                    <span className="text-yellow-500 text-2xl">★</span>
+                  </button>
+                ))}
+                {averageRating > 0 && (
+                  <span className="ml-4 text-gray-500">
+                    Average Rating: {averageRating}
+                  </span>
+                )}
               </div>
             </div>
             {/* Comments section */}

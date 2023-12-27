@@ -252,6 +252,7 @@ const OrderCompletionModal = ({
 
   const [paymentMethod, setPaymentMethod] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [deliveryMethod, setDeliveryMethod] = useState("");
 
   const renderOrderSummary = () => {
     return cartItems.map((item, index) => (
@@ -275,6 +276,7 @@ const OrderCompletionModal = ({
           user_id: userId,
           products: cartItems,
           total_price: total,
+          delivery_method: deliveryMethod,
           delivery_address: deliveryAddress,
           payment_method: paymentMethod,
           order_state: "Pending",
@@ -300,27 +302,27 @@ const OrderCompletionModal = ({
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
-      <div className="bg-white p-5 rounded-lg shadow-lg w-1/3">
-        <h2 className="text-lg font-bold mb-4 text-black">Order Summary</h2>
-        <div className="mb-4">{renderOrderSummary()}</div>
-        <div className="mt-4 flex flex-row justify-between">
-          <div className="">
-            <label className="block text-black ">Delivery Address</label>
+      <div className="bg-white p-5 rounded-lg shadow-xl w-1/3 space-y-4">
+        <h2 className="text-xl font-bold mb-4 text-gray-800">Order Summary</h2>
+        <div>{renderOrderSummary()}</div>
+
+        <div className="flex flex-col space-y-3">
+          <div>
+            <label className="block text-gray-700">Delivery Address</label>
             <input
               type="text"
               value={deliveryAddress}
               onChange={(e) => setDeliveryAddress(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md h-12 w-[10rem] text-black"
+              className="w-full p-2 border border-gray-300 rounded-md text-gray-700"
             />
           </div>
 
-          {/* Payment Method Selector */}
-          <div className="">
-            <label className="block text-black ">Payment Method</label>
+          <div>
+            <label className="block text-gray-700">Payment Method</label>
             <select
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md h-12 w-[8rem]"
+              className="w-full p-2 border border-gray-300 rounded-md text-gray-700"
             >
               <option value="Credit Card">Credit Card</option>
               <option value="Debit Card">Debit Card</option>
@@ -328,19 +330,35 @@ const OrderCompletionModal = ({
               <option value="Cash on Delivery">Cash on Delivery</option>
             </select>
           </div>
-          <button
-            onClick={completeOrder}
-            className="bg-green-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-green-700"
-          >
-            Complete Order
-          </button>
 
-          <button
-            onClick={onClose}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-          >
-            Close
-          </button>
+          <div>
+            <label className="block text-gray-700">Delivery Method</label>
+            <select
+              value={deliveryMethod}
+              onChange={(e) => setDeliveryMethod(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md text-gray-700"
+            >
+              <option value="">Select Delivery Method</option>
+              <option value="Standard">Standard Shipping</option>
+              <option value="Express">Express Shipping</option>
+              <option value="Overnight">Overnight Shipping</option>
+            </select>
+          </div>
+
+          <div className="flex justify-end space-x-2">
+            <button
+              onClick={onClose}
+              className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-300"
+            >
+              Close
+            </button>
+            <button
+              onClick={completeOrder}
+              className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-700 transition duration-300"
+            >
+              Complete Order
+            </button>
+          </div>
         </div>
       </div>
     </div>
