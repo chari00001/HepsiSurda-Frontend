@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getUserById } from "../../network/lib/user";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
       setIsLoggedIn(true);
+
+      getUserById(localStorage.getItem("user_id"))
+        .then((res) => {
+          setIsAdmin(res.data.isadmin);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, []);
 
@@ -48,11 +58,13 @@ const Navbar = () => {
               Categories
             </span>
           </Link>
-          <Link href="/admin">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
-              Admin
-            </span>
-          </Link>
+          {isAdmin && (
+            <Link href="/admin">
+              <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+                Admin
+              </span>
+            </Link>
+          )}
         </div>
         <div>
           <input

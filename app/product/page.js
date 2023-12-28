@@ -11,6 +11,7 @@ import {
   getProductComments,
   rateComment,
 } from "../../network/lib/comment";
+import { replyToComment, getCommentReplies } from "../../network/lib/replies";
 import { createRating, getProductRatings } from "../../network/lib/rating";
 import { getUserById } from "../../network/lib/user";
 
@@ -18,6 +19,7 @@ const DetailPage = ({ productId }) => {
   const userId = localStorage.getItem("user_id");
   const [product, setProduct] = useState({});
   const [comments, setComments] = useState([]);
+  const [replies, setReplies] = useState({});
   const [currentComment, setCurrentComment] = useState("");
   const [userNames, setUserNames] = useState({});
   const [sortCriterion, setSortCriterion] = useState("date");
@@ -27,6 +29,8 @@ const DetailPage = ({ productId }) => {
   const [filteredComments, setFilteredComments] = useState([]);
   const [ratingFilter, setRatingFilter] = useState(null);
   const [averageRating, setAverageRating] = useState(0);
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [replyText, setReplyText] = useState("");
 
   const id = useSearchParams().get("id");
 
@@ -58,6 +62,32 @@ const DetailPage = ({ productId }) => {
     fetchProductAndImages();
     fetchComments();
   }, [productId]);
+
+  useEffect(() => {
+    // Function to fetch replies for each comment
+    const fetchReplies = async (commentId) => {
+      try {
+        const res = await getCommentReplies(commentId);
+        return res.data;
+      } catch (err) {
+        console.error("Error fetching replies:", err);
+        return [];
+      }
+    };
+
+    // Fetch replies after comments are loaded
+    const fetchAllReplies = async () => {
+      const newReplies = {};
+      for (const comment of comments) {
+        newReplies[comment.comment_id] = await fetchReplies(comment.comment_id);
+      }
+      setReplies(newReplies);
+    };
+
+    if (comments.length > 0) {
+      fetchAllReplies();
+    }
+  }, [comments]);
 
   useEffect(() => {
     if (product && product.features) {
@@ -155,7 +185,30 @@ const DetailPage = ({ productId }) => {
     setSelectedFeatures({ ...selectedFeatures, [featureKey]: value });
   };
 
-  const handleReplyToComment = (commentId, reply) => {};
+  const handleReplyToComment = (commentId) => {
+    // Implement the logic to handle the reply
+    console.log(`Replying to comment ${commentId} with text: ${replyText}`);
+    // Reset the states
+    setReplyingTo(null);
+    setReplyText("");
+
+    replyToComment({
+      comment_id: commentId,
+      user_id: userId,
+      text: replyText,
+    }).then((res) => {
+      if (res.status === 201) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Reply added",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      }
+    });
+  };
 
   const handleAddToCart = async () => {
     const cartData = {
@@ -384,33 +437,80 @@ const DetailPage = ({ productId }) => {
                       {/* Comment Text */}
                       <p className="text-gray-800 mb-3">{comment.text}</p>
 
-                      {/* Rating Section */}
-                      <div className="flex items-center">
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleRateComment(
-                              comment.comment_id,
-                              comment.rating + 1
-                            );
-                          }}
-                          className="mr-2"
-                        >
-                          👍
-                        </button>
-                        <span className="font-semibold">{comment.rating}</span>
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleRateComment(
-                              comment.comment_id,
-                              comment.rating - 1
-                            );
-                          }}
-                          className="ml-2"
-                        >
-                          👎
-                        </button>
+                      <div className="flex flex-row-reverse justify-between items-center">
+                        <div className="w-10/12">
+                          {replyingTo === comment.comment_id ? (
+                            <div className="mt-4">
+                              <textarea
+                                value={replyText}
+                                onChange={(e) => setReplyText(e.target.value)}
+                                className="w-full border border-gray-300 rounded-md p-2"
+                                placeholder="Write your reply..."
+                              />
+                              <button
+                                onClick={() =>
+                                  handleReplyToComment(comment.comment_id)
+                                }
+                                className="mt-2 bg-blue-500 text-white py-2 px-4 rounded-md"
+                              >
+                                Send Reply
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => setReplyingTo(comment.comment_id)}
+                              className="mt-2 bg-gray-300 text-black py-2 px-4 rounded-md"
+                            >
+                              Reply
+                            </button>
+                          )}
+                        </div>
+
+                        {/* Rating Section */}
+                        <div className="flex items-center mt-2">
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleRateComment(
+                                comment.comment_id,
+                                comment.rating + 1
+                              );
+                            }}
+                            className="mr-2"
+                          >
+                            👍
+                          </button>
+                          <span className="font-semibold">
+                            {comment.rating}
+                          </span>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleRateComment(
+                                comment.comment_id,
+                                comment.rating - 1
+                              );
+                            }}
+                            className="ml-2"
+                          >
+                            👎
+                          </button>
+                        </div>
+                      </div>
+                      {/* Display Replies */}
+                      <div className="mt-4 ml-4">
+                        {replies[comment.comment_id] &&
+                          replies[comment.comment_id].map((reply) => (
+                            <div
+                              key={reply.reply_id}
+                              className="bg-gray-100 p-2 rounded-lg mb-2"
+                            >
+                              <p className="text-sm text-gray-600">
+                                {userNames[reply.user_id] || "User"}:
+                              </p>
+                              <p className="text-gray-800">{reply.text}</p>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   ))}

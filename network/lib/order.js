@@ -20,7 +20,7 @@ const getOrders = async () => {
 const getOrdersByUserId = async (userId) => {
   try {
     const response = await api.get(`/orders/${userId}`);
-    return response.data;
+    return response;
   } catch (error) {
     console.log(error);
   }

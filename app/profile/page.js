@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
+import Orders from "../../components/Orders/Orders";
 import { getUserById, updateUser } from "../../network/lib/user";
 import { getOrdersByUserId } from "../../network/lib/order";
 import { resetPassword } from "../../network/lib/auth";
@@ -20,7 +21,6 @@ const ProfilePage = () => {
   useEffect(() => {
     getUserById(userId)
       .then((res) => {
-        console.log(res);
         setUser(res.data);
         setName(res.data.name);
         setSurname(res.data.surname);
@@ -31,18 +31,6 @@ const ProfilePage = () => {
         console.log(err);
       });
   }, []);
-
-  useEffect(() => {
-    if (user) {
-      getOrdersByUserId(userId)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [user]);
 
   const resetPasswordHandler = (event) => {
     event.preventDefault();
@@ -77,123 +65,127 @@ const ProfilePage = () => {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto">
-        <header className="py-4">{/* Navigation bar or back button */}</header>
-        <main className="py-8">
-          <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg">
-            <div className="p-4">
-              <div className="flex items-center justify-center text-black">
-                <img
-                  src="https://i.redd.it/utn1pj33lbe91.jpg"
-                  alt="Profile Picture"
-                  className="w-24 h-24 rounded-full object-cover"
-                />
-              </div>
-              <div className="mt-4">
-                <h2 className="text-xl font-semibold text-black">
-                  User Credentials
-                </h2>
-                <div className="mt-4">
-                  <label className="text-md text-gray-600">Name</label>
-                  <div className="flex items-center mt-1">
-                    <input
-                      onChange={(e) => {
-                        setName(e.target.value);
-                      }}
-                      type="text"
-                      className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
-                      placeholder="Name"
-                      value={name}
-                    />
-                  </div>
+      <div className="flex flex-row justify center">
+        <div className="container mx-auto w-1/2">
+          <main className="py-8">
+            <div className="max-w-md ml-auto mr-4 bg-white rounded-lg shadow-lg">
+              <div className="p-4">
+                <div className="flex items-center justify-center text-black">
+                  <img
+                    src="https://i.redd.it/utn1pj33lbe91.jpg"
+                    alt="Profile Picture"
+                    className="w-24 h-24 rounded-full object-cover"
+                  />
                 </div>
                 <div className="mt-4">
-                  <label className="text-md text-gray-600">Surname</label>
-                  <div className="flex items-center mt-1">
-                    <input
-                      onChange={(e) => {
-                        setSurname(e.target.value);
-                      }}
-                      type="text"
-                      className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
-                      placeholder="Surname"
-                      value={surname}
-                    />
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <label className="text-md text-gray-600">Email</label>
-                  <div className="flex items-center mt-1">
-                    <input
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
-                      type="text"
-                      className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
-                      placeholder="Email"
-                      value={email}
-                    />
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <label className="text-md text-gray-600">Phone</label>
-                  <div className="flex items-center mt-1">
-                    <input
-                      onChange={(e) => {
-                        setTelno(e.target.value);
-                      }}
-                      type="text"
-                      className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
-                      placeholder="Phone"
-                      value={telno}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4">
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-400 focus:bg-green-400 focus:outline-none"
-                  onClick={updateUserHandler}
-                >
-                  Update User
-                </button>
-              </div>
-              <div className="mt-6">
-                <h2 className="text-xl font-semibold text-black">
-                  Update Password
-                </h2>
-                <form>
+                  <h2 className="text-xl font-semibold text-black">
+                    User Credentials
+                  </h2>
                   <div className="mt-4">
-                    <label className="text-md text-gray-600">
-                      New Password
-                    </label>
+                    <label className="text-md text-gray-600">Name</label>
                     <div className="flex items-center mt-1">
                       <input
-                        type="password"
-                        className="border-2 border-slate-300 rounded-md p-2
-            mr-4 text-xl font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-all duration-300 ease-in-out transform hover:scale-y-105 hover:shadow-xl shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-opacity-50 max-h-12"
-                        placeholder="New Password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
+                        onChange={(e) => {
+                          setName(e.target.value);
+                        }}
+                        type="text"
+                        className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
+                        placeholder="Name"
+                        value={name}
                       />
                     </div>
                   </div>
                   <div className="mt-4">
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-400 focus:bg-green-400 focus:outline-none"
-                      onClick={resetPasswordHandler}
-                    >
-                      Update Password
-                    </button>
+                    <label className="text-md text-gray-600">Surname</label>
+                    <div className="flex items-center mt-1">
+                      <input
+                        onChange={(e) => {
+                          setSurname(e.target.value);
+                        }}
+                        type="text"
+                        className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
+                        placeholder="Surname"
+                        value={surname}
+                      />
+                    </div>
                   </div>
-                </form>
+                  <div className="mt-4">
+                    <label className="text-md text-gray-600">Email</label>
+                    <div className="flex items-center mt-1">
+                      <input
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                        }}
+                        type="text"
+                        className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
+                        placeholder="Email"
+                        value={email}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <label className="text-md text-gray-600">Phone</label>
+                    <div className="flex items-center mt-1">
+                      <input
+                        onChange={(e) => {
+                          setTelno(e.target.value);
+                        }}
+                        type="text"
+                        className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
+                        placeholder="Phone"
+                        value={telno}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-400 focus:bg-green-400 focus:outline-none"
+                    onClick={updateUserHandler}
+                  >
+                    Update User
+                  </button>
+                </div>
+                <div className="mt-6">
+                  <h2 className="text-xl font-semibold text-black">
+                    Update Password
+                  </h2>
+                  <form>
+                    <div className="mt-4">
+                      <label className="text-md text-gray-600">
+                        New Password
+                      </label>
+                      <div className="flex items-center mt-1">
+                        <input
+                          type="password"
+                          className="border-2 border-slate-300 rounded-md p-2
+            mr-4 text-xl font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-all duration-300 ease-in-out transform hover:scale-y-105 hover:shadow-xl shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-opacity-50 max-h-12"
+                          placeholder="New Password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <button
+                        type="submit"
+                        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-400 focus:bg-green-400 focus:outline-none"
+                        onClick={resetPasswordHandler}
+                      >
+                        Update Password
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
-        </main>
-        <footer className="py-4">{/* Additional content or links */}</footer>
+          </main>
+          <footer className="py-4">{/* Additional content or links */}</footer>
+        </div>
+        <div className="w-1/2 mr-auto">
+          <Orders />
+        </div>
       </div>
     </div>
   );
