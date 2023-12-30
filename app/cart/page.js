@@ -10,6 +10,7 @@ import {
 } from "../../network/lib/cart";
 import { getProductById } from "../../network/lib/product";
 import { makeOrder } from "../../network/lib/order";
+import { getAllCoupons, getCouponByCode } from "../../network/lib/coupon";
 import Swal from "sweetalert2";
 
 const CartPage = () => {
@@ -54,11 +55,13 @@ const CartPage = () => {
 
   useEffect(() => {
     if (items) {
+      let total = 0;
       items.map((item) => {
-        setTotal((prev) => prev + item.amount * item.quantity);
+        total += item.amount * item.quantity;
       });
+      console.log(total);
+      setTotal(total);
     }
-    console.log(total);
   }, [items]);
 
   const completeOrder = () => {
@@ -164,7 +167,7 @@ const CartPage = () => {
               <button onClick={handleEmptyCart} className="text-red-500">
                 Empty Cart
               </button>
-              <p className="text-black">Total: {total / 2}</p>
+              <p className="text-black">Total: {total}</p>
             </div>
           </div>
           <ul className="divide-y divide-gray-200">
@@ -254,6 +257,18 @@ const OrderCompletionModal = ({
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [deliveryMethod, setDeliveryMethod] = useState("");
 
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const [couponCode, setCouponCode] = useState("");
+  const [coupon, setCoupon] = useState(null);
+  const [couponUsed, setCouponUsed] = useState(false);
+
+  useEffect(() => {
+    if (total) {
+      setTotalPrice(total);
+    }
+  }, [total]);
+
   const renderOrderSummary = () => {
     return cartItems.map((item, index) => (
       <div key={index} className="flex justify-between mb-2">
@@ -262,6 +277,36 @@ const OrderCompletionModal = ({
         <span className="text-black">Amount: ${item.amount}</span>
       </div>
     ));
+  };
+
+  const applyCoupon = () => {
+    getCouponByCode(couponCode)
+      .then((res) => {
+        if (res.status === 200) {
+          const isExpired = new Date(res.data.enddate) < new Date();
+          if (isExpired) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Kuponun süresi dolmuş",
+            });
+          } else {
+            console.log(res.data);
+            if (res.data.coupontype === "price") {
+              setTotalPrice(totalPrice - parseInt(res.data.pricediscount));
+            } else if (res.data.coupontype === "percent") {
+              setTotalPrice(
+                totalPrice -
+                  (totalPrice * parseInt(res.data.percentdiscount)) / 100
+              );
+            }
+            setCouponUsed(true);
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const completeOrder = () => {
@@ -275,7 +320,7 @@ const OrderCompletionModal = ({
         makeOrder({
           user_id: userId,
           products: cartItems,
-          total_price: total,
+          total_price: totalPrice,
           delivery_method: deliveryMethod,
           delivery_address: deliveryAddress,
           payment_method: paymentMethod,
@@ -343,6 +388,46 @@ const OrderCompletionModal = ({
               <option value="Express">Express Shipping</option>
               <option value="Overnight">Overnight Shipping</option>
             </select>
+          </div>
+
+          <div>
+            <label className="block text-gray-700">Coupon Code</label>
+            <div className="flex space-x-2">
+              <input
+                type="text"
+                placeholder="Enter coupon code"
+                // Assuming you have a state variable for the coupon code
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                className="flex-grow p-2 border border-gray-300 rounded-md text-gray-700"
+              />
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (couponUsed) {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Error",
+                      text: "You already used a coupon",
+                    });
+                  } else {
+                    applyCoupon();
+                  }
+                }} // Assuming you have an applyCoupon function
+                className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition duration-300"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+
+          <div className="text-right">
+            <div className="text-lg font-semibold text-gray-800">
+              Total Price:
+            </div>
+            <div className="text-2xl font-bold text-green-600">
+              ${totalPrice} {/* Replace with your total price state variable */}
+            </div>
           </div>
 
           <div className="flex justify-end space-x-2">
