@@ -24,24 +24,12 @@ const ProductList = () => {
       .catch((err) => console.log(err));
   }, []);
 
-
-
   return (
-    <div className="grid grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:w-2/3 w-10/12">
       {products?.map((product, i) => (
-        <Link
-          href={{
-            pathname: "/product/",
-            query: { id: product.product_id },
-          }}
-          key={i}
-        >
-          <div>
-            {" "}
-            {/* Make sure to use <a> tag to enable the navigation */}
-            <Product product={product} />
-          </div>
-        </Link>
+        <div key={i}>
+          <Product product={product} />
+        </div>
       ))}
     </div>
   );

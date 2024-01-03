@@ -8,6 +8,8 @@ function CreateProduct() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [features, setFeatures] = useState([{ key: "", value: "" }]);
+  const [campaign, setCampaign] = useState(false);
+  const [discountPercent, setDiscountPercent] = useState(0);
 
   const handleFeatureChange = (index, key, value) => {
     const newFeatures = [...features];
@@ -28,6 +30,8 @@ function CreateProduct() {
     formData.append("price", price);
     formData.append("description", description);
     formData.append("features", JSON.stringify(features));
+    formData.append("campaign", campaign);
+    formData.append("discountPercent", campaign ? discountPercent : 0);
     if (image) {
       formData.append("image", image);
     }
@@ -35,6 +39,7 @@ function CreateProduct() {
     const res = await createProduct(formData);
     console.log(res);
   };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -73,6 +78,29 @@ function CreateProduct() {
         onChange={(e) => setImage(e.target.files[0])}
         className="w-full p-2 border border-gray-300 rounded-md text-black"
       />
+      <div className="flex flex-row w-full">
+        <label className="flex items-center space-x-2 w-1/6">
+          <input
+            type="checkbox"
+            checked={campaign}
+            onChange={(e) => setCampaign(e.target.checked)}
+            className="w-4 h-4"
+          />
+          <span className="text-black">Campaign</span>
+        </label>
+        <input
+          type="number"
+          disabled={!campaign}
+          defaultValue={0}
+          placeholder="Discount Percent"
+          value={discountPercent}
+          onChange={(e) => setDiscountPercent(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded-md text-black w-10/12"
+          min="0"
+          max="100"
+        />
+      </div>
+
       <div className="flex flex-col w-full space-y-2">
         {features.map((feature, index) => (
           <div key={index} className="flex space-x-2">

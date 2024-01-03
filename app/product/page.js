@@ -210,16 +210,24 @@ const DetailPage = ({ productId }) => {
     });
   };
 
+  const calculateDiscountedPrice = () => {
+    if (product.campaign) {
+      return ((product.price * (100 - product.discountpercent)) / 100).toFixed(
+        2
+      );
+    }
+    return product.price;
+  };
+
   const handleAddToCart = async () => {
+    const discountedPrice = calculateDiscountedPrice();
     const cartData = {
       user_id: userId,
       product_id: product.product_id,
-      amount: product.price,
+      amount: discountedPrice,
       quantity,
-      features: selectedFeatures, // Include selected features here
+      features: selectedFeatures,
     };
-
-    console.log(cartData);
 
     try {
       const res = await addToCart(cartData);
@@ -296,6 +304,8 @@ const DetailPage = ({ productId }) => {
       });
   }, []);
 
+  const discountedPrice = calculateDiscountedPrice();
+
   return (
     <>
       <Navbar />
@@ -303,6 +313,12 @@ const DetailPage = ({ productId }) => {
         {product && (
           <div className="">
             <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+            {product.campaign && (
+              <div className="inline-block bg-red-400 text-white px-4 py-1 text-sm font-bold rounded-full shadow-md mb-2">
+                %{product.discountpercent} indirim
+              </div>
+            )}
+
             <div className="flex flex-row gap-4">
               {/* Images section */}
               <div className="w-1/3">
@@ -312,7 +328,20 @@ const DetailPage = ({ productId }) => {
               <div className="flex flex-row w-2/3 justify-between">
                 <div className="flex flex-col">
                   <div className="mb-4">
-                    <span className="text-xl font-bold">{product.price}</span>
+                    {product.campaign ? (
+                      <>
+                        <span className="text-xl font-bold line-through">
+                          {product.price} TL
+                        </span>
+                        <span className="text-xl font-bold text-red-500 ml-2">
+                          {discountedPrice} TL
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-xl font-bold">
+                        {product.price} TL
+                      </span>
+                    )}
                   </div>
                   <div>
                     <input
