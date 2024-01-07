@@ -35,11 +35,11 @@ const Orders = () => {
   }, [userId]);
 
   return (
-    <div className="">
+    <div className="w-[30rem]">
       <main className="py-8">
-        <div className="max-w-md  ml-4 bg-white rounded-lg shadow-lg">
+        <div className="ml-4 bg-white rounded-lg shadow-lg">
           <div className="p-4">
-            <div className="flex items-center justify-center text-black">
+            <div className=" flex items-center justify-center text-black">
               {/* Order Details */}
               <h2 className="text-xl font-semibold text-black">
                 Order Details

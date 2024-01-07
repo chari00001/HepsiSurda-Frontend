@@ -37,8 +37,8 @@ const SavedComparisons = () => {
   }
 
   return (
-    <main className="py-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg">
+    <main className="w-[30rem] max-h-[48.33rem] w-full py-8 mt-8 overflow-auto rounded-lg shadow-lg">
+      <div className="bg-white rounded-lg shadow-lg">
         <div className="p-6">
           <div className="flex items-center justify-center text-black">
             <h2 className="text-2xl font-bold mb-6">Saved Comparisons</h2>
@@ -57,7 +57,7 @@ const SavedComparisons = () => {
               </div>
               <div className="text-center mt-6">
                 <Link href={`/compare/${comparison.comparison_id}`} passHref>
-                  <div className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  <div className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
                     View Full Comparison
                   </div>
                 </Link>
