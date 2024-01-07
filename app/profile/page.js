@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Orders from "../../components/Orders/Orders";
+import SavedComparisons from "../../components/SavedComparisons/SavedComparisons";
 import { getUserById, updateUser } from "../../network/lib/user";
-import { getOrdersByUserId } from "../../network/lib/order";
 import { resetPassword } from "../../network/lib/auth";
 
 const ProfilePage = () => {
@@ -66,7 +66,7 @@ const ProfilePage = () => {
     <div>
       <Navbar />
       <div className="flex flex-row justify center">
-        <div className="container mx-auto w-1/2">
+        <div className="container mx-auto w-1/3">
           <main className="py-8">
             <div className="max-w-md ml-auto mr-4 bg-white rounded-lg shadow-lg">
               <div className="p-4">
@@ -183,8 +183,11 @@ const ProfilePage = () => {
           </main>
           <footer className="py-4">{/* Additional content or links */}</footer>
         </div>
-        <div className="w-1/2 mr-auto">
+        <div className="w-1/3 mr-auto">
           <Orders />
+        </div>
+        <div className="w-1/3">
+          <SavedComparisons />
         </div>
       </div>
     </div>

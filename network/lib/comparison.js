@@ -38,7 +38,8 @@ const getComparisonsByUserId = async (userId) => {
 
 const updateComparison = async (id, updatedData) => {
   try {
-    const response = await api.patch(`/comparisons/${id}`, updatedData);
+    console.log(updatedData);
+    const response = await api.patch(`/comparisons/${id}`, { updatedData });
     return response;
   } catch (error) {
     console.log(error);

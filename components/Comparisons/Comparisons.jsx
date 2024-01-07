@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   getAllComparisons,
   deleteComparisonById,
+  updateComparison,
 } from "../../network/lib/comparison"; // Update the path accordingly
 
 const Comparisons = () => {
@@ -39,7 +40,17 @@ const Comparisons = () => {
   };
 
   const handleSave = () => {
-    // Implement save logic
+    try {
+      if (activeComparison) {
+        updateComparison(activeComparison.comparison_id, {
+          ...activeComparison,
+          isactive: false,
+        });
+        setActiveComparison(null);
+      }
+    } catch (error) {
+      console.log("Error updating comparison:", error);
+    }
   };
 
   if (!activeComparison) return null;
