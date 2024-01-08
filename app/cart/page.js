@@ -159,87 +159,90 @@ const CartPage = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-        <div className="w-full max-w-6xl p-4 mt-8 bg-white rounded shadow">
-          <div className="flex flex-row justify-between">
-            <h1 className="text-2xl font-bold mb-4 text-black">Your Cart</h1>
-            <div>
-              <button onClick={handleEmptyCart} className="text-red-500">
-                Empty Cart
-              </button>
-              <p className="text-black">Total: {total}</p>
-            </div>
-          </div>
-          <ul className="divide-y divide-gray-200">
-            {items.map((item, i) => (
-              <li key={i} className="flex justify-between items-center p-2">
-                <div className="flex flex-row justify-between w-full px-4">
-                  <p className="text-black">Amount: {item.amount}</p>
-                  <div className="text-black">
-                    <span>Quantity:</span>
+      <div className="container mx-auto p-4">
+        <h1 className="text-3xl font-bold mb-6 text-gray-700">Your Cart</h1>
+        <div className="bg-white rounded shadow overflow-x-auto">
+          <table className="w-full text-sm text-left text-gray-500">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Product
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Quantity
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Price
+                </th>
+                <th scope="col" className="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item, i) => (
+                <tr className="bg-white border-b" key={i}>
+                  <td className="px-6 py-4">{item.name}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (item.quantity > 1) {
+                            updateQuantity(item.cart_id, item.quantity - 1);
+                          }
+                        }}
+                        className="bg-red-500 text-white rounded px-2 py-1 mr-2"
+                      >
+                        -
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          updateQuantity(item.cart_id, item.quantity + 1);
+                        }}
+                        className="bg-green-500 text-white rounded px-2 py-1 ml-2"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">${item.amount}</td>
+                  <td className="px-6 py-4 text-right">
                     <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (item.quantity === 1) {
-                          deleteItem(item.cart_id);
-                        }
-                        updateQuantity(item.cart_id, item.quantity - 1);
-                      }}
-                      className="mr-2 ml-2 bg-red-500 rounded px-2 py-1 text-black hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50"
+                      onClick={() => deleteItem(item.cart_id)}
+                      className="font-medium text-red-600 hover:underline mr-2"
                     >
-                      -
+                      Remove
                     </button>
-                    <span>{item.quantity}</span>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        updateQuantity(item.cart_id, item.quantity + 1);
-                      }}
-                      className="mr-2 ml-2 bg-green-500 rounded px-2 py-1 text-black hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <div>
-                    {item.features &&
-                      Object.entries(item.features).map(
-                        ([key, value], index) => (
-                          <p key={index} className="text-gray-600">
-                            {key}: {value}
-                          </p>
-                        )
-                      )}
-                  </div>
-                  <p className="text-black w-[15rem]">
-                    Product Name: {item.name}
-                  </p>
-                </div>
-                <div>
-                  <button
-                    className="bg-red-500 text-white rounded px-2 py-1"
-                    onClick={() => deleteItem(item.cart_id)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="flex justify-between items-center mt-6">
           <button
-            className="bg-green-500 text-white rounded px-2 py-1 mt-4"
+            onClick={handleEmptyCart}
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+          >
+            Empty Cart
+          </button>
+          <div className="text-lg font-bold text-gray-700">Total: ${total}</div>
+          <button
             onClick={openModal}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             Complete Order
           </button>
-          <OrderCompletionModal
-            isOpen={orderModalOpen}
-            onClose={closeModal}
-            cartItems={items}
-            userId={userId}
-            total={total}
-          />
         </div>
       </div>
+      <OrderCompletionModal
+        isOpen={orderModalOpen}
+        onClose={closeModal}
+        cartItems={items}
+        userId={userId}
+        total={total}
+      />
     </div>
   );
 };
@@ -272,11 +275,32 @@ const OrderCompletionModal = ({
   const renderOrderSummary = () => {
     return cartItems.map((item, index) => (
       <div key={index} className="flex justify-between mb-2">
-        <span className="text-black">Product ID: {item.product_id}</span>
+        <span className="text-black">
+          Product: {productDetails[item.product_id]}
+        </span>
         <span className="text-black">Quantity: {item.quantity}</span>
         <span className="text-black">Amount: ${item.amount}</span>
       </div>
     ));
+  };
+
+  const handleEmptyCart = () => {
+    deleteAllCartItemsByUserId(userId)
+      .then((res) => {
+        if (res.status === 204) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Cart emptied",
+          });
+          setTimeout(() => {
+            window.location.href = "/cart";
+          }, 1500);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const applyCoupon = () => {
@@ -310,6 +334,20 @@ const OrderCompletionModal = ({
   };
 
   const completeOrder = () => {
+    // Check if all required fields are filled
+    if (
+      !deliveryAddress.trim() ||
+      !paymentMethod.trim() ||
+      !deliveryMethod.trim()
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Missing Information",
+        text: "Please fill in all fields before completing the order.",
+      });
+      return;
+    }
+
     Swal.fire({
       icon: "warning",
       title: "Are you sure?",
@@ -333,6 +371,7 @@ const OrderCompletionModal = ({
                 title: "Success",
                 text: "Order completed",
               });
+              handleEmptyCart(); // Empty the cart after successful order
               setTimeout(() => {
                 window.location.href = "/";
               }, 1500);
@@ -344,6 +383,28 @@ const OrderCompletionModal = ({
       }
     });
   };
+
+  const [productDetails, setProductDetails] = useState({});
+
+  useEffect(() => {
+    // Fetch product details for each cart item
+    const fetchProductDetails = async () => {
+      const details = {};
+      for (const item of cartItems) {
+        try {
+          const response = await getProductById(item.product_id);
+          details[item.product_id] = response.name;
+        } catch (error) {
+          console.error("Error fetching product details", error);
+        }
+      }
+      setProductDetails(details);
+    };
+
+    if (isOpen) {
+      fetchProductDetails();
+    }
+  }, [isOpen, cartItems]);
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
@@ -369,6 +430,9 @@ const OrderCompletionModal = ({
               onChange={(e) => setPaymentMethod(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md text-gray-700"
             >
+              <option value="" disabled>
+                Select Payment Method
+              </option>
               <option value="Credit Card">Credit Card</option>
               <option value="Debit Card">Debit Card</option>
               <option value="PayPal">PayPal</option>
@@ -383,7 +447,9 @@ const OrderCompletionModal = ({
               onChange={(e) => setDeliveryMethod(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md text-gray-700"
             >
-              <option value="">Select Delivery Method</option>
+              <option value="" disabled>
+                Select Delivery Method
+              </option>
               <option value="Standard">Standard Shipping</option>
               <option value="Express">Express Shipping</option>
               <option value="Overnight">Overnight Shipping</option>

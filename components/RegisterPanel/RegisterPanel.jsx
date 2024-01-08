@@ -17,7 +17,6 @@ function RegisterPanel() {
     if (name && surname && telno && email && password) {
       register({ name, surname, telno, email, password })
         .then((res) => {
-          localStorage.setItem("token", res.data.token);
           Swal.fire({
             icon: "success",
             title: "Kayıt başarılı",

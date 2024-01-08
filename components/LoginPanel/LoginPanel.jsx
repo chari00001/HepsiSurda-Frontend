@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { login } from "../../network/lib/auth";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 function LoginPanel() {
   const [password, setPassword] = useState("");
@@ -58,13 +59,19 @@ function LoginPanel() {
             />
           </label>
         </div>
-
-        <button
-          type="submit"
-          className="text-white bg-blue-500 rounded-md p-2 px-6 transition-colors duration-200 hover:bg-blue-700 my-4"
-        >
-          Login
-        </button>
+        <div className="flex flex-row justify-start gap-4 items-center">
+          <button
+            type="submit"
+            className="text-white bg-blue-500 rounded-md p-2 px-6 transition-colors duration-200 hover:bg-blue-700 my-4"
+          >
+            Login
+          </button>
+          <Link href="/register">
+            <div className="text-blue-500 hover:text-blue-700 transition-colors duration-200 border-2 border-blue-500 px-4 py-2 rounded-md">
+              Kaydol
+            </div>
+          </Link>
+        </div>
       </form>
     </div>
   );

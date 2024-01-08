@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getUserById } from "../../network/lib/user";
+import { FaShoppingBasket } from "react-icons/fa";
+import { VscAccount } from "react-icons/vsc";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,12 +23,15 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6 w-screen">
+    <nav className="flex items-center justify-between flex-wrap bg-orange-500 p-6 w-screen">
       <Link href="/">
-        <span className="flex items-center flex-shrink-0 text-white mr-6">
-          <span className="font-semibold text-xl tracking-tight">Logo</span>
-        </span>
+        <div className="flex items-center flex-shrink-0 text-white mr-6">
+          <span className="font-semibold text-xl tracking-tight">
+            HepsiSurda
+          </span>
+        </div>
       </Link>
+
       <div className="block lg:hidden">
         <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
           <svg
@@ -39,40 +44,35 @@ const Navbar = () => {
           </svg>
         </button>
       </div>
-      <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-        <div className="text-sm lg:flex-grow">
-          <Link href={isLoggedIn ? "profile" : "/login"}>
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-              {isLoggedIn ? "Profile" : "Login/Register"}
-            </span>
-          </Link>
-          {isLoggedIn && (
+
+      <div className="flex items-center">
+        {isLoggedIn ? (
+          <>
+            <Link href="/profile">
+              <div className="block lg:inline-block hover:text-white mr-4">
+                <VscAccount className="inline-block h-6 w-6 fill-current" />
+              </div>
+            </Link>
             <Link href="/cart">
-              <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-                Cart
-              </span>
+              <div className="block lg:inline-block  hover:text-white mr-4">
+                <FaShoppingBasket className="inline-block h-6 w-6 fill-current" />
+              </div>
             </Link>
-          )}
-          <Link href="/categories">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-              Categories
-            </span>
+          </>
+        ) : (
+          <Link href="/login">
+            <div className="block lg:inline-block  hover:text-white mr-4">
+              Login/Register
+            </div>
           </Link>
-          {isAdmin && (
-            <Link href="/admin">
-              <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
-                Admin
-              </span>
-            </Link>
-          )}
-        </div>
-        <div>
-          <input
-            className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4 px-4 py-2 rounded-md bg-gray-200 focus:outline-none focus:bg-gray-900 focus:text-white"
-            type="search"
-            placeholder="Search"
-          />
-        </div>
+        )}
+        {isAdmin && (
+          <Link href="/admin">
+            <div className="block mt-4 lg:inline-block lg:mt-0  hover:text-white">
+              Admin
+            </div>
+          </Link>
+        )}
       </div>
     </nav>
   );
