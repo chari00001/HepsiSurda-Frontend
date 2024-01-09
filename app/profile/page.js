@@ -72,17 +72,17 @@ const ProfilePage = () => {
               <div className="p-4">
                 <div className="flex items-center justify-center text-black">
                   <img
-                    src="https://i.redd.it/utn1pj33lbe91.jpg"
+                    src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Windows_10_Default_Profile_Picture.svg"
                     alt="Profile Picture"
                     className="w-24 h-24 rounded-full object-cover"
                   />
                 </div>
                 <div className="mt-4">
                   <h2 className="text-xl font-semibold text-black">
-                    User Credentials
+                    Kullanıcı Bilgileri
                   </h2>
                   <div className="mt-4">
-                    <label className="text-md text-gray-600">Name</label>
+                    <label className="text-md text-gray-600">İsim</label>
                     <div className="flex items-center mt-1">
                       <input
                         onChange={(e) => {
@@ -90,13 +90,13 @@ const ProfilePage = () => {
                         }}
                         type="text"
                         className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
-                        placeholder="Name"
+                        placeholder="İsim"
                         value={name}
                       />
                     </div>
                   </div>
                   <div className="mt-4">
-                    <label className="text-md text-gray-600">Surname</label>
+                    <label className="text-md text-gray-600">Soyisim</label>
                     <div className="flex items-center mt-1">
                       <input
                         onChange={(e) => {
@@ -104,13 +104,13 @@ const ProfilePage = () => {
                         }}
                         type="text"
                         className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
-                        placeholder="Surname"
+                        placeholder="Soyisim"
                         value={surname}
                       />
                     </div>
                   </div>
                   <div className="mt-4">
-                    <label className="text-md text-gray-600">Email</label>
+                    <label className="text-md text-gray-600">E-posta</label>
                     <div className="flex items-center mt-1">
                       <input
                         onChange={(e) => {
@@ -118,13 +118,15 @@ const ProfilePage = () => {
                         }}
                         type="text"
                         className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
-                        placeholder="Email"
+                        placeholder="E-posta"
                         value={email}
                       />
                     </div>
                   </div>
                   <div className="mt-4">
-                    <label className="text-md text-gray-600">Phone</label>
+                    <label className="text-md text-gray-600">
+                      Telefon Numarası
+                    </label>
                     <div className="flex items-center mt-1">
                       <input
                         onChange={(e) => {
@@ -132,7 +134,7 @@ const ProfilePage = () => {
                         }}
                         type="text"
                         className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
-                        placeholder="Phone"
+                        placeholder="Telefon Numarası"
                         value={telno}
                       />
                     </div>
@@ -144,24 +146,24 @@ const ProfilePage = () => {
                     className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-400 focus:bg-green-400 focus:outline-none"
                     onClick={updateUserHandler}
                   >
-                    Update User
+                    Bilgileri Güncelle
                   </button>
                 </div>
                 <div className="mt-6">
                   <h2 className="text-xl font-semibold text-black">
-                    Update Password
+                    Şifreyi Değiştir
                   </h2>
                   <form>
                     <div className="mt-4">
                       <label className="text-md text-gray-600">
-                        New Password
+                        Yeni Şifre
                       </label>
                       <div className="flex items-center mt-1">
                         <input
                           type="password"
                           className="border-2 border-slate-300 rounded-md p-2
             mr-4 text-xl font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-all duration-300 ease-in-out transform hover:scale-y-105 hover:shadow-xl shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-opacity-50 max-h-12"
-                          placeholder="New Password"
+                          placeholder="Yeni Şifre"
                           value={newPassword}
                           onChange={(e) => setNewPassword(e.target.value)}
                         />
@@ -173,7 +175,7 @@ const ProfilePage = () => {
                         className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-400 focus:bg-green-400 focus:outline-none"
                         onClick={resetPasswordHandler}
                       >
-                        Update Password
+                        Şifreyi Değiştir
                       </button>
                     </div>
                   </form>

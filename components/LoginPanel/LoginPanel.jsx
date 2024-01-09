@@ -37,7 +37,7 @@ function LoginPanel() {
       >
         <div className="w-[10rem]">
           <label className="text-black">
-            Email:
+            E-posta:
             <input
               type="email"
               value={email}
@@ -49,7 +49,7 @@ function LoginPanel() {
         </div>
         <div className="w-[10rem]">
           <label className="text-black">
-            Password:
+            Şifre:
             <input
               type="password"
               value={password}
@@ -64,7 +64,7 @@ function LoginPanel() {
             type="submit"
             className="text-white bg-blue-500 rounded-md p-2 px-6 transition-colors duration-200 hover:bg-blue-700 my-4"
           >
-            Login
+            Giriş Yap
           </button>
           <Link href="/register">
             <div className="text-blue-500 hover:text-blue-700 transition-colors duration-200 border-2 border-blue-500 px-4 py-2 rounded-md">

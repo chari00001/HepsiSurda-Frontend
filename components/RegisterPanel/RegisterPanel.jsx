@@ -40,7 +40,7 @@ function RegisterPanel() {
       >
         <div className="w-[10rem]">
           <label className="text-black">
-            Name:
+            İsim:
             <input
               type="text"
               value={name}
@@ -52,7 +52,7 @@ function RegisterPanel() {
         </div>
         <div className="w-[10rem]">
           <label className="text-black">
-            Surname:
+            Soyisim:
             <input
               type="text"
               value={surname}
@@ -64,7 +64,7 @@ function RegisterPanel() {
         </div>
         <div className="w-[10rem]">
           <label className="text-black">
-            Phone number:
+            Telefon Numarası:
             <input
               type="text"
               value={telno}
@@ -76,7 +76,7 @@ function RegisterPanel() {
         </div>
         <div className="w-[10rem]">
           <label className="text-black">
-            Email:
+            E-posta:
             <input
               type="email"
               value={email}
@@ -88,7 +88,7 @@ function RegisterPanel() {
         </div>
         <div className="w-[10rem]">
           <label className="text-black">
-            Password:
+            Şifre:
             <input
               type="password"
               value={password}
@@ -103,7 +103,7 @@ function RegisterPanel() {
           type="submit"
           className="text-white bg-blue-500 rounded-md p-2 px-6 transition-colors duration-200 hover:bg-blue-700 my-4"
         >
-          Register
+          Kaydol
         </button>
       </form>
     </div>

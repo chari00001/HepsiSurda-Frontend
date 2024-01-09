@@ -42,7 +42,7 @@ const Orders = () => {
             <div className=" flex items-center justify-center text-black">
               {/* Order Details */}
               <h2 className="text-xl font-semibold text-black">
-                Order Details
+                Sipariş Geçmişi
               </h2>
             </div>
             <div className="flex flex-col overflow-y-scroll max-h-[44.55rem]">
@@ -52,31 +52,31 @@ const Orders = () => {
                   className="mb-4 p-4 bg-white rounded-lg shadow"
                 >
                   <h2 className="text-xl font-semibold text-black">
-                    Order ID: {order.order_id}
+                    Sipariş numarası: {order.order_id}
                   </h2>
                   <p className="text-black">
-                    <strong>Date:</strong>{" "}
+                    <strong>Tarih:</strong>{" "}
                     {new Date(order.order_date).toLocaleDateString()}
                   </p>
                   <p className="text-black">
-                    <strong>Total Price:</strong> ${order.total_price}
+                    <strong>Toplam tutar:</strong> ${order.total_price}
                   </p>
                   <p className="text-black">
-                    <strong>Delivery Address:</strong> {order.delivery_address}
+                    <strong>Teslimat adresi:</strong> {order.delivery_address}
                   </p>
                   <p className="text-black">
-                    <strong>Delivery Method:</strong> {order.delivery_method}
+                    <strong>Teslimat yöntemi:</strong> {order.delivery_method}
                   </p>
                   <p className="text-black">
-                    <strong>Payment Method:</strong> {order.payment_method}
+                    <strong>Ödeme yöntemi:</strong> {order.payment_method}
                   </p>
                   <p className="text-black">
-                    <strong>Status:</strong> {order.order_state}
+                    <strong>Sipariş durumu:</strong> {order.order_state}
                   </p>
 
                   <div className="mt-4">
                     <h3 className="text-lg font-semibold text-black">
-                      Products
+                      Ürünler
                     </h3>
                     <ul className="overflow-y-scroll max-h-[10rem]">
                       {order.products.map((product, index) => (
@@ -98,10 +98,10 @@ const Orders = () => {
                           <div>
                             <p className="text-black">{product.name}</p>
                             <p className="text-black">
-                              Price: ${product.price}
+                              Fiyat: ${product.price}
                             </p>
                             <p className="text-black">
-                              Quantity: {product.quantity}
+                              Adet: {product.quantity}
                             </p>
                           </div>
                         </li>

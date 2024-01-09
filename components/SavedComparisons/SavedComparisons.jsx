@@ -14,11 +14,9 @@ const SavedComparisons = () => {
         const inactiveComparisons = response.data.filter(
           (comp) => !comp.isactive
         );
-        // Fetch details for both products in each comparison
         for (const comparison of inactiveComparisons) {
           const product1Details = await getProductById(comparison.productid_1);
           const product2Details = await getProductById(comparison.productid_2);
-          // Assign the fetched details to the comparison object
           comparison.product1Details = product1Details;
           comparison.product2Details = product2Details;
         }
@@ -33,7 +31,7 @@ const SavedComparisons = () => {
   }, [userId]);
 
   if (comparisons.length === 0) {
-    return <div>No saved comparisons found.</div>;
+    return <div>Geçmiş karşılaştırma bulunamadı.</div>;
   }
 
   return (
@@ -41,7 +39,7 @@ const SavedComparisons = () => {
       <div className="bg-white rounded-lg shadow-lg">
         <div className="p-6">
           <div className="flex items-center justify-center text-black">
-            <h2 className="text-2xl font-bold mb-6">Saved Comparisons</h2>
+            <h2 className="text-2xl font-bold mb-6">Geçmiş Karşılaştırmalar</h2>
           </div>
           {comparisons.map((comparison) => (
             <div
@@ -49,19 +47,19 @@ const SavedComparisons = () => {
               className="mb-8 p-6 bg-gray-100 rounded-lg shadow-md"
             >
               <h2 className="text-xl font-semibold text-black mb-4">
-                Comparison ID: {comparison.comparison_id}
+                Karşılaştırma No: {comparison.comparison_id}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <ProductCard details={comparison.product1Details} />
                 <ProductCard details={comparison.product2Details} />
               </div>
-              <div className="text-center mt-6">
+              {/* <div className="text-center mt-6">
                 <Link href={`/compare/${comparison.comparison_id}`} passHref>
                   <div className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
-                    View Full Comparison
+                    Karşıl
                   </div>
                 </Link>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
@@ -81,7 +79,7 @@ const ProductCard = ({ details }) => {
       />
       {/* Other product details can go here */}
       <div className="text-center">
-        <p className="text-gray-700 mb-2">Price: ${details.price}</p>
+        <p className="text-gray-700 mb-2">Fiyat: {details.price} TL</p>
         {/* Add more details as needed */}
       </div>
     </div>

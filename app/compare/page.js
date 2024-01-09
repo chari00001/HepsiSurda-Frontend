@@ -84,39 +84,45 @@ const ComparisonPage = () => {
     <div>
       <Navbar />
       <div className="container mx-auto p-4">
-        <h2 className="text-xl font-bold mb-4 text-black">
-          Product Comparison
+        <h2 className="text-2xl font-bold mb-4 text-black">
+          Ürün Karşılaştırması
         </h2>
         <div className="overflow-x-auto">
-          <table className="table-auto border-collapse border border-gray-400 w-full">
+          <table className="min-w-full leading-normal">
             <thead>
               <tr>
-                <th className="border border-gray-300 px-4 py-2 text-black">
-                  Feature
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Özellik
                 </th>
-                <th className="border border-gray-300 px-4 py-2 text-black">
-                  {product1?.name || "Product 1"}
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  {product1?.name || "Ürün 1"}
                 </th>
-                <th className="border border-gray-300 px-4 py-2 text-black">
-                  {product2?.name || "Product 2"}
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  {product2?.name || "Ürün 2"}
                 </th>
               </tr>
             </thead>
             <tbody>
               {comparisonData.map((item, index) => (
-                <tr key={index} className="text-center">
-                  <td className="border border-gray-300 px-4 py-2 text-black">
-                    {item.feature}
+                <tr key={index}>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                      {item.feature}
+                    </p>
                   </td>
-                  <td className="border border-gray-300 px-4 py-2 text-black">
-                    {typeof item.value1 === "object"
-                      ? JSON.stringify(item.value1)
-                      : item.value1}
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                      {typeof item.value1 === "object"
+                        ? JSON.stringify(item.value1)
+                        : item.value1}
+                    </p>
                   </td>
-                  <td className="border border-gray-300 px-4 py-2 text-black">
-                    {typeof item.value2 === "object"
-                      ? JSON.stringify(item.value2)
-                      : item.value2}
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                      {typeof item.value2 === "object"
+                        ? JSON.stringify(item.value2)
+                        : item.value2}
+                    </p>
                   </td>
                 </tr>
               ))}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getUserById } from "../../network/lib/user";
 import { FaShoppingBasket } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
+import { MdContacts } from "react-icons/md";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,20 +33,7 @@ const Navbar = () => {
         </div>
       </Link>
 
-      <div className="block lg:hidden">
-        <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
-          <svg
-            className="fill-current h-3 w-3"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>Menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-          </svg>
-        </button>
-      </div>
-
-      <div className="flex items-center">
+      <div className="flex items-center gap-4">
         {isLoggedIn ? (
           <>
             <Link href="/profile">
@@ -58,14 +46,20 @@ const Navbar = () => {
                 <FaShoppingBasket className="inline-block h-6 w-6 fill-current" />
               </div>
             </Link>
+            <Link href="/contact">
+              <div className="block lg:inline-block hover:text-white mr-4 cursor-pointer">
+                <MdContacts className="inline-block h-6 w-6 fill-current" />
+              </div>
+            </Link>
           </>
         ) : (
           <Link href="/login">
             <div className="block lg:inline-block  hover:text-white mr-4">
-              Login/Register
+              Giriş Yap/Kaydol
             </div>
           </Link>
         )}
+
         {isAdmin && (
           <Link href="/admin">
             <div className="block mt-4 lg:inline-block lg:mt-0  hover:text-white">

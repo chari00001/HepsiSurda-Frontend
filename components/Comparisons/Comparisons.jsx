@@ -74,23 +74,23 @@ const Comparisons = () => {
       <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg border-2">
         <div>
           <h3 className="text-xl font-semibold text-gray-800 mb-2">
-            Active Comparison
+            Aktif Karşılaştırma
           </h3>
-          <p className="text-black">Product 1: {productNames.product1}</p>
-          <p className="text-black">Product 2: {productNames.product2}</p>
+          <p className="text-black">Ürün 1: {productNames.product1}</p>
+          <p className="text-black">Ürün 2: {productNames.product2}</p>
         </div>
         <div className="flex items-center">
           <button
             onClick={handleSave}
             className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
           >
-            Save
+            Kaydet
           </button>
           <button
             onClick={handleDelete}
             className="bg-red-500 text-white px-4 py-2 rounded-md mr-4"
           >
-            Delete
+            Sil
           </button>
           {/* Karşılaştır Button */}
           <Link href="/compare">

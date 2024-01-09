@@ -97,7 +97,7 @@ const Product = ({ product }) => {
         onClick={handleAddToActiveComparison}
         className="mt-2 bg-blue-500 hover:bg-blue-600 text-xs w-full text-white py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 mx-auto mb-2"
       >
-        Add to Comparison
+        Karşılaştır
       </button>
     </div>
   );

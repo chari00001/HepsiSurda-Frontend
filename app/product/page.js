@@ -246,11 +246,6 @@ const DetailPage = ({ productId }) => {
     }
   };
 
-  const handleCompare = () => {
-    // Add the product to the compare list
-    // ...
-  };
-
   const handleRateComment = (commentId, rating) => {
     rateComment(commentId, parseInt(rating))
       .then((res) => {
@@ -357,16 +352,7 @@ const DetailPage = ({ productId }) => {
                     onClick={handleAddToCart}
                     className="bg-blue-500 text-white py-2 px-4 mt-4 rounded-md"
                   >
-                    Add to Cart
-                  </button>
-                  {/* Cargo and delivery options section */}
-                  <div>{/* ... */}</div>
-                  {/* Compare button */}
-                  <button
-                    onClick={handleCompare}
-                    className="bg-gray-500 text-white py-2 px-4 mt-2 rounded-md"
-                  >
-                    Compare
+                    Sepete Ekle
                   </button>
                 </div>
                 <div className="flex flex-col space-y-4">
@@ -395,7 +381,7 @@ const DetailPage = ({ productId }) => {
               </div>
             </div>
             <div className="mt-4">
-              <h2 className="text-xl font-bold mb-2">Rate this product</h2>
+              <h2 className="text-xl font-bold mb-2">Bu ürünü değerlendir</h2>
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button key={star} onClick={() => handleRating(star)}>
@@ -404,8 +390,8 @@ const DetailPage = ({ productId }) => {
                   </button>
                 ))}
                 {averageRating > 0 && (
-                  <span className="ml-4 text-gray-500">
-                    Average Rating: {averageRating}
+                  <span className="ml-4 text-gray-500 my-auto">
+                    Ortalama Puan: {averageRating}
                   </span>
                 )}
               </div>
@@ -414,12 +400,12 @@ const DetailPage = ({ productId }) => {
             <div className="mt-8">
               {/* Make comment section */}
               <div>
-                <h2 className="text-xl font-bold mb-4">Comments</h2>
+                <h2 className="text-xl font-bold mb-4">Yorumlar</h2>
                 <div className="mb-4">
                   <textarea
                     onChange={(e) => setCurrentComment(e.target.value)}
                     className="w-full border border-gray-300 rounded-md p-2"
-                    placeholder="Write a comment..."
+                    placeholder="Yorum yaz..."
                   />
                 </div>
                 <div className="flex flex-row justify-between items-center space-x-4">
@@ -427,7 +413,7 @@ const DetailPage = ({ productId }) => {
                     onClick={handleMakeComment}
                     className="bg-blue-500 text-white py-2 px-4 rounded-md"
                   >
-                    Comment
+                    Yorum yap
                   </button>
 
                   <div>
@@ -436,12 +422,12 @@ const DetailPage = ({ productId }) => {
                       onChange={(e) => setSortCriterion(e.target.value)}
                       className="border border-gray-300 rounded-md py-2 px-4 bg-white"
                     >
-                      <option value="date">Sort by Date</option>
-                      <option value="rating">Sort by Rating</option>
+                      <option value="date">Tarihe göre</option>
+                      <option value="rating">Puana göre</option>
                     </select>
                   </div>
                   <span className="text-gray-500">
-                    Total Comments: {comments.length}
+                    Toplam yorum sayısı: {comments.length}
                   </span>
                 </div>
               </div>
@@ -474,7 +460,7 @@ const DetailPage = ({ productId }) => {
                                 value={replyText}
                                 onChange={(e) => setReplyText(e.target.value)}
                                 className="w-full border border-gray-300 rounded-md p-2"
-                                placeholder="Write your reply..."
+                                placeholder="Yanıtınızı giriniz..."
                               />
                               <button
                                 onClick={() =>
@@ -482,7 +468,7 @@ const DetailPage = ({ productId }) => {
                                 }
                                 className="mt-2 bg-blue-500 text-white py-2 px-4 rounded-md"
                               >
-                                Send Reply
+                                Yanıt ver
                               </button>
                             </div>
                           ) : (
@@ -490,7 +476,7 @@ const DetailPage = ({ productId }) => {
                               onClick={() => setReplyingTo(comment.comment_id)}
                               className="mt-2 bg-gray-300 text-black py-2 px-4 rounded-md"
                             >
-                              Reply
+                              Yanıt ver
                             </button>
                           )}
                         </div>

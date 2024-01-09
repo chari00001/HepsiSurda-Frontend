@@ -160,19 +160,19 @@ const CartPage = () => {
     <div>
       <Navbar />
       <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-6 text-gray-700">Your Cart</h1>
+        <h1 className="text-3xl font-bold mb-6 text-gray-700">Sepetiniz</h1>
         <div className="bg-white rounded shadow overflow-x-auto">
           <table className="w-full text-sm text-left text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-100">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  Product
+                  Ürün
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Quantity
+                  Adet
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Price
+                  Fiyat
                 </th>
                 <th scope="col" className="px-6 py-3"></th>
               </tr>
@@ -212,7 +212,7 @@ const CartPage = () => {
                       onClick={() => deleteItem(item.cart_id)}
                       className="font-medium text-red-600 hover:underline mr-2"
                     >
-                      Remove
+                      Sepetten Çıkar
                     </button>
                   </td>
                 </tr>
@@ -225,14 +225,16 @@ const CartPage = () => {
             onClick={handleEmptyCart}
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
           >
-            Empty Cart
+            Sepeti boşalt
           </button>
-          <div className="text-lg font-bold text-gray-700">Total: ${total}</div>
+          <div className="text-lg font-bold text-gray-700">
+            Toplam: ${total}
+          </div>
           <button
             onClick={openModal}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
-            Complete Order
+            Siparişi gözden geçir
           </button>
         </div>
       </div>
@@ -276,10 +278,10 @@ const OrderCompletionModal = ({
     return cartItems.map((item, index) => (
       <div key={index} className="flex justify-between mb-2">
         <span className="text-black">
-          Product: {productDetails[item.product_id]}
+          Ürün: {productDetails[item.product_id]}
         </span>
-        <span className="text-black">Quantity: {item.quantity}</span>
-        <span className="text-black">Amount: ${item.amount}</span>
+        <span className="text-black">Adet: {item.quantity}</span>
+        <span className="text-black">Fiyat: ${item.amount}</span>
       </div>
     ));
   };
@@ -409,12 +411,12 @@ const OrderCompletionModal = ({
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
       <div className="bg-white p-5 rounded-lg shadow-xl w-1/3 space-y-4">
-        <h2 className="text-xl font-bold mb-4 text-gray-800">Order Summary</h2>
+        <h2 className="text-xl font-bold mb-4 text-gray-800">Sipariş Özeti</h2>
         <div>{renderOrderSummary()}</div>
 
         <div className="flex flex-col space-y-3">
           <div>
-            <label className="block text-gray-700">Delivery Address</label>
+            <label className="block text-gray-700">Adres</label>
             <input
               type="text"
               value={deliveryAddress}
@@ -424,44 +426,44 @@ const OrderCompletionModal = ({
           </div>
 
           <div>
-            <label className="block text-gray-700">Payment Method</label>
+            <label className="block text-gray-700">Ödeme Yöntemi</label>
             <select
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md text-gray-700"
             >
               <option value="" disabled>
-                Select Payment Method
+                Ödeme Yöntemi Seçin
               </option>
-              <option value="Credit Card">Credit Card</option>
-              <option value="Debit Card">Debit Card</option>
+              <option value="Kredi Kartı">Kredi Kartı</option>
+              <option value="Banka Kartı">Banka Kartı</option>
               <option value="PayPal">PayPal</option>
-              <option value="Cash on Delivery">Cash on Delivery</option>
+              <option value="Kapıda ödeme">Kapıda ödeme</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-gray-700">Delivery Method</label>
+            <label className="block text-gray-700">Teslimat Yöntemi</label>
             <select
               value={deliveryMethod}
               onChange={(e) => setDeliveryMethod(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md text-gray-700"
             >
               <option value="" disabled>
-                Select Delivery Method
+                Teslimat Yöntemi Seçin
               </option>
-              <option value="Standard">Standard Shipping</option>
-              <option value="Express">Express Shipping</option>
-              <option value="Overnight">Overnight Shipping</option>
+              <option value="Standart Taşıma">Standart Taşıma</option>
+              <option value="Express Taşıma">Express Taşıma</option>
+              <option value="Gece Taşıma">Gece Taşıma</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-gray-700">Coupon Code</label>
+            <label className="block text-gray-700">Kupon kodu</label>
             <div className="flex space-x-2">
               <input
                 type="text"
-                placeholder="Enter coupon code"
+                placeholder="Kupon kodunuzu giriniz"
                 // Assuming you have a state variable for the coupon code
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
@@ -489,10 +491,11 @@ const OrderCompletionModal = ({
 
           <div className="text-right">
             <div className="text-lg font-semibold text-gray-800">
-              Total Price:
+              Toplam Tutar:
             </div>
             <div className="text-2xl font-bold text-green-600">
-              ${totalPrice} {/* Replace with your total price state variable */}
+              {totalPrice} TL{" "}
+              {/* Replace with your total price state variable */}
             </div>
           </div>
 
@@ -501,13 +504,13 @@ const OrderCompletionModal = ({
               onClick={onClose}
               className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-300"
             >
-              Close
+              Kapat
             </button>
             <button
               onClick={completeOrder}
               className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-700 transition duration-300"
             >
-              Complete Order
+              Siparişi Tamamla
             </button>
           </div>
         </div>
